@@ -1,0 +1,145 @@
+
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@pragnankiran007 
+harish192210189
+/
+c-programming-assignment
+Public
+Fork your own copy of harish192210189/c-programming-assignment
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+c-programming-assignment/assignment day 5
+@harish192210189
+harish192210189 Create assignment day 5
+Latest commit d769eb8 last week
+ History
+ 1 contributor
+191 lines (148 sloc)  4.2 KB
+ 
+
+1.	Write a program that reads a file named "input.txt" and writes all lines containing the word "error" to a file named "error_log.txt". Then, read the "error_log.txt" file and print the contents to the console
+
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    
+FILE *input_file = fopen("input.txt", "r");
+if (input_file == NULL) {
+printf("Error: Could not open input.txt\n");
+return 1;
+}
+
+FILE *error_file = fopen("error_log.txt", "w");
+if (error_file == NULL) {
+printf("Error: Could not open error_log.txt\n");
+return 1;
+}
+
+char line[100];
+
+while (fgets(line, 100, input_file)) {
+if (strstr(line, "error") != NULL) {
+fputs(line, error_file);
+}
+}
+fclose(input_file);
+fclose(error_file);
+
+error_file = fopen("error_log.txt", "r");
+if (error_file == NULL) {
+printf("Error: Could not open error_log.txt\n");
+return 1;
+}
+
+printf("Contents of error_log.txt:\n");
+while (fgets(line, 100, error_file)) {
+printf("%s", line);
+}
+
+fclose(error_file);
+return 0;
+}
+
+
+2.	Create a program that reads data from a binary file named "data.bin" and prints it to the console in a human-readable format.
+
+
+#include <stdio.h>
+
+int main() {
+    
+FILE *binary_file = fopen("data.bin", "rb");
+if (binary_file == NULL) {
+printf("Error: Could not open data.bin\n");
+return 1;
+}
+
+fseek(binary_file, 0, SEEK_END);
+long file_size = ftell(binary_file);
+fseek(binary_file, 0, SEEK_SET);
+
+char *data = malloc(file_size);
+if (data == NULL) {
+printf("Error: Out of memory\n");
+return 1;
+}
+fread(data, 1, file_size, binary_file);
+fclose(binary_file);
+for (int i = 0; i < file_size; i++) {
+printf("%c", data[i]);
+}
+free(data);
+return 0;
+}
+
+
+3.	Write a program that reads a text file named "input.txt" and replaces all occurrences of the word "red" with the word "blue". Then, write the modified text to a new file named "output.txt".
+
+
+
+#include <stdio.h>
+#include <string.h>
+#define 
+int main() {
+FILE *input_file = fopen("input.txt", "r");
+if (input_file == NULL) {
+printf("Error: Could not open input.txt\n");
+return 1;
+}
+
+FILE *output_file = fopen("output.txt", "w");
+if (output_file == NULL) {
+printf("Error: Could not create output.txt\n");
+fclose(input_file);
+return 1;
+}
+
+char line[MAX_LINE_LENGTH];
+while (fgets(line, MAX_LINE_LENGTH, input_file) != NULL) {
+char *token;
+char *rest = line;
+while ((token = strtok_r(rest, " ", &rest))) {
+if (strcmp(token, "red\n") == 0 || strcmp(token, "red") == 0) {
+fputs("blue ", output_file);
+} else {
+fputs(token, output_file);
+fputs(" ", output_file);
+}
+}
+}
+fclose(input_file);
+fclose(output_file);
+return 0;
